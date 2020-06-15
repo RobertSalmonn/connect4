@@ -1,3 +1,3 @@
 # connect4
-## Connect 4, made with python
+### Connect 4, made with python
 By Robert Salmon
