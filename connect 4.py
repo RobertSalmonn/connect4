@@ -20,6 +20,18 @@ board=[[0, 0, 0, 0, 0, 0, 0],
 
 
 
+p_pen=turtle.Turtle()
+p_pen.penup()
+p_pen.color("white")
+p_pen.goto(0, -260)
+p_pen.hideturtle()
+
+
+g_pen=turtle.Turtle()
+g_pen.penup()
+g_pen.color("white")
+g_pen.goto(0, 200)
+g_pen.hideturtle()
 
 pen=turtle.Turtle()
 pen.color("black")
@@ -44,6 +56,7 @@ for i in range (7):
 pieces=[]
 class Piece (turtle.Turtle):
     def __init__(self):
+        
         global turn
         global v_turn
         
@@ -53,6 +66,10 @@ class Piece (turtle.Turtle):
         elif turn=="yellow":
             turn="red"
             v_turn=1
+
+
+        
+        
         turtle.Turtle.__init__(self)
         self.penup()
         self.shape("circle")
@@ -127,17 +144,25 @@ class Piece (turtle.Turtle):
         
 
 
-
+p_pen.write(f"red's go", align="center", font=("Calibri", 30))
 def dropzone(x, y):
     global game_over
     global turn
     global counter
     global column
-    
-    
+    global fail
+    global counter
+
+
+
+
     
     if game_over=="no":
+        
         piece=Piece()
+
+        
+        
         if x>-210 and x<-150 and board[0][0]==0:
             piece.goto(-180, 150)
             column=0
@@ -173,6 +198,7 @@ def dropzone(x, y):
             column=6
             counter+=1
             piece.animate()
+            
 
         else:
             piece.goto(1000, 1000)
@@ -180,6 +206,20 @@ def dropzone(x, y):
                 turn="yellow"
             else:
                 turn="red"
+
+        if turn=="red":
+            turn="yellow"
+        else:
+            turn="red"
+            
+
+        p_pen.clear()
+        p_pen.write(f"{turn}'s go", align="center", font=("Calibri", 30))
+        if turn=="red":
+            turn="yellow"
+        else:
+            turn="red"
+        print (counter)
     else:
         pass
 
@@ -190,8 +230,7 @@ def dropzone(x, y):
     
 
 
-wn.listen()
-wn.onscreenclick(dropzone)
+
         
     
 
@@ -199,19 +238,40 @@ wn.onscreenclick(dropzone)
 def win(team):
     pen.penup()
     pen.goto(0,200)
-    pen.write(f"{team} wins!", align="center", font=("Calibri", 50))
+    g_pen.write(f"{team} wins!", align="center", font=("Calibri", 50))
+    
 
 def tie():
     pen.penup()
     pen.goto(0,200)
-    pen.write(f"Draw!", align="center", font=("Calibri", 50))
+    g_pen.write(f"Draw!", align="center", font=("Calibri", 50))
 
+    
+def replay():
+    global turn
+    global game_over
+    global counter
+    counter=0
+    game_over="no"
+    turn="yellow"
+    p_pen.clear()
+    p_pen.write(f"red's go", align="center", font=("Calibri", 30))
+    g_pen.clear()
+    
+    for i in range (6):
+        for j in range (7):
+            if board[i][j]!=0:
+                board[i][j]=0
+
+    for piece in pieces:
+        piece.goto(1000, 1000)
     
 
 
 
-
-
+wn.listen()
+wn.onscreenclick(dropzone)
+wn.onkeypress(replay, "r")
 
 
 
